@@ -12,7 +12,7 @@ from rest_framework.status import (
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from . sms_integration import send_sms
+from . sms_integration import send_sms, send_sms_v2
 from . utils import random_with_N_digits, bd_number_match, swedish_phone_no_formatter
 
 
@@ -70,12 +70,13 @@ class SendSMS(APIView):
     def post(self, request, format=None):
         # simply delete the token to force a login
         phone_number = request.data.get("phone")
+        print(phone_number)
 
         # phone number validation to do
 
-        if not bd_number_match(phone_number):
-            return Response({'error': 'Invalid phone number'},
-                        status=HTTP_400_BAD_REQUEST)
+        # if not bd_number_match(phone_number):
+        #     return Response({'error': 'Invalid phone number'},
+        #                 status=HTTP_400_BAD_REQUEST)
 
         verification_code = random_with_N_digits(4)
         message = f"your verification code is {verification_code}"
