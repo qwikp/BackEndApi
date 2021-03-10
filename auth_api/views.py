@@ -81,10 +81,11 @@ class SendSMS(APIView):
         verification_code = random_with_N_digits(4)
         message = f"your verification code is {verification_code}"
 
-        send_sms(phone_no=swedish_phone_no_formatter(phone_number), message=message)
+        send_sms(phone_no=swedish_phone_no_formatter(phone_number), message=message, title='QwikPharma')
 
         data = {
-            'response' : "success"
+            'response' : "success",
+            'code': verification_code
         }
         return Response(data, status=HTTP_200_OK)
 
