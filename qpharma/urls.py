@@ -21,4 +21,6 @@ API_V1 = 'v1'
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/auth/', include(('auth_api.urls', API_V1), namespace=API_V1)),
+    path('api/v1/cart/', include(('cart.urls' ))),
+    path('api/v1/medicine/', include(('medicine.urls'), )),
 ]

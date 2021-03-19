@@ -1,5 +1,8 @@
 from django.db import models
-from medicine import Product
+
+from medicine.models import Medicine
+
+
 class Cart(models.Model):
 	cart_id = models.CharField(max_length=250, blank=True)
 	date_added = models.DateField(auto_now_add=True)
@@ -13,7 +16,7 @@ class Cart(models.Model):
 
 
 class CartItem(models.Model):
-	product = models.ForeignKey(Product, on_delete=models.CASCADE) #i.e if the product is deleted then any mention of that product is also deleted
+	medicine = models.ForeignKey(Medicine, on_delete=models.CASCADE) #i.e if the product is deleted then any mention of that product is also deleted
 	cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
 	quantity = models.IntegerField()
 	active = models.BooleanField(default=True)
@@ -22,7 +25,7 @@ class CartItem(models.Model):
 		db_table = 'CartItem'
 
 	def sub_total(self): #to calculate the total price 
-		return self.product.price * self.quantity
+		return self.unit_price.price * self.quantity
 
 	def __str__(self):
-		return self.product
+		return self.medicine
