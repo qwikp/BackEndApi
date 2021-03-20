@@ -1,7 +1,11 @@
 import re
 from bs4 import BeautifulSoup
 import requests
-
+import os
+import django
+os.environ["DJANGO_SETTINGS_MODULE"] = 'qpharma.settings'
+django.setup()
+from medicine.models import  Medicine
 
 # https://medex.com.bd/brands/10929/a-fenac-25mg
 
@@ -57,6 +61,28 @@ def collect_medicine_info_from_medex(base_url='https://medex.com.bd/brands', lim
             overdose_effects = find_content(soup=soup2, content_id='overdose_effects')
             administration = find_content(soup=soup2, content_id='administration')
 
+            medicine=Medicine(dosage =dosage,
+            brand_name = brand_name,
+            generic_name = generic_name,
+            strength = re.findall(r"[-+]?\d*\.\d+|\d+",strength)[0],
+            manufactured_by = manufactured_by,
+            unit_price =re.findall(r"[-+]?\d*\.\d+|\d+",package_container)[0],
+            indications = indications,
+            therapheutic_class = therapheutic_class,
+            description = description,
+            pharmacology = pharmacology,
+            doasge_and_administration = doasge_and_administration,
+            interaction = interaction,
+            contraindications = contraindications,
+            side_effects = side_effects,
+            pregnancy_and_lactation = pregnancy_and_lactation,
+            precautions = precautions,
+            storage_conditions = storage_conditions,
+            overdose_effects = overdose_effects,
+            administration = administration,
+            )
+            m=medicine.save()
+            print(m)
             print(f"Brand: {brand_name}\nDosage form: {dosage}\nGeneric Name: {generic_name}\nStrength: {strength}\n"
                   f"Manufactured By: {manufactured_by}\nPackage: {package_container}\nIndications: {indications}\n"
                   f"Therapheutic Class: {therapheutic_class}\nDescription: {description}\nPharmacology: {pharmacology}\n"
